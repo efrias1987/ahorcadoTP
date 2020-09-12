@@ -1,0 +1,26 @@
+victor
+palabras random
+posibilidad de agregar palabras
+
+javier
+posibilidad de cambiar palabra
+jugar de a dos
+
+emanuel
+contra la maquina
+
+candela
+ O
+ _
+/|\
+/ \
+
+resultado
+no es posible reutilizar letras
+
+|posibilidad de borrar consola a asignar|
+
+String palabraSecreta(palabraRandom - palabraManual) - victor
+int cantidadIntentos (7) - candela
+char[] letrasUtilizadas - candela
+
