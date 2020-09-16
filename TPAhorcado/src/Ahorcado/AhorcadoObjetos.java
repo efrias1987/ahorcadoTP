@@ -2,33 +2,41 @@ package Ahorcado;
 import java.util.*;
 
 public class AhorcadoObjetos {
-	static String palabraSecreta;
-	static String letrasUtilizadas;
-	private int cantidadIntentos = 0;
-
-protected static String PalabOculta;
-
+	//static String palabraSecreta;
+	static String letrasUtilizadas = " ";
+	private int[] cantidadIntentos = {0,0};
+	protected static String PalabOculta;
+	char[] PalabraenAsterisco;
+	int contadorLetras;
+	
+	int getCantIntentos(int turno){
+		return cantidadIntentos[turno];
+	}
+	
+	int getContadorLetras() {
+		return contadorLetras;
+	}
+	
 	public void PalabraOculta() {			
 		Scanner teclado= new Scanner(System.in);
-		String [] Palabra= {"telescopio","perro","escoba","caballo","carrusel","cataratas","avion","iguana",};
+		String [] Palabra= {"telescopio","perro","escoba","caballo","carrusel","cataratas","avion","iguana"};
 		Random R= new Random();
 		int NumAleatorio= R.nextInt(Palabra.length);
-		PalabOculta = Palabra[NumAleatorio].toUpperCase();	
+		PalabOculta = Palabra[NumAleatorio].toUpperCase();
+		PalabraenAsterisco = new char[PalabOculta.length()];
+		contadorLetras = PalabOculta.length();
 		Asteriscos(PalabOculta);
 	}
 	
 	public void Asteriscos(String palabra) {
-		int Numletrasdepalabra = PalabOculta.length();
-		char[] PalabraenAsterisco = new char[Numletrasdepalabra];
-		for(int i=0; i<PalabraenAsterisco.length; i++) {
+		for(int i=0; i<palabra.length(); i++) {
 			PalabraenAsterisco[i] = '*';
 		}
 		System.out.println(PalabraenAsterisco);
 	}
 	
-	public void intentos() {
-		while (cantidadIntentos <= 7) {
-			switch (cantidadIntentos) {
+	public void intentos(int intentos) {
+		switch (intentos) {
 				case 1:
 					System.out.println("O");
 					break;
@@ -59,57 +67,79 @@ protected static String PalabOculta;
 					System.out.println(" /|\\ ");
 					System.out.println(" / \\ ");
 					System.out.println("Perdió");
-			}
+					break;
 		}
 	}
 
 	public void repeticionLetras(char c, int turno){
-		int i=0;
-		do {
+		boolean validador = false;
+		
+		for (int i = 0; i < letrasUtilizadas.length(); i++) {
 			if (c == letrasUtilizadas.charAt(i)) {
-				ingresarLetra(turno);
+				validador = true;
 			}
-		}while(i<letrasUtilizadas.length());
-		letrasUtilizadas = c + letrasUtilizadas;
-		resultado(c, turno);
-	}
+		}
+		
+		if (validador) {
+			if (turno == 0) {
+				System.out.println("La letra ya existe, vuelva a intentarlo");
+			}
+			ingresarLetra(turno);
+		}else {
+			letrasUtilizadas = c + letrasUtilizadas;
+			resultado(c, turno);
+		}
+		if(turno == 1) {
+			System.out.println("La maquina eligio la letra "+ c);
+		}
+		System.out.println("Las letras utilizadas son " + letrasUtilizadas);
+		}
 
 	public void ingresarLetra(int turno) {
+		char letra;
 		if(turno == 0) {
 			System.out.println("Ingrese la letra: ");
-			char letra;
 			Scanner teclado= new Scanner(System.in);
 			letra = teclado.next().toUpperCase().charAt(0);
-			repeticionLetras(letra, turno);
+			repeticionLetras(letra, 0);
 		}else {
 			Random rnd = new Random();
-			char letra;
 			letra = (char)(rnd.nextInt(26) + 'A');
-			repeticionLetras(letra, turno);
+			repeticionLetras(letra, 1);
 		}
 		
 	}
 	
 	public void resultado(char c, int turno) {
-		Boolean validador = false;
-		if (!validador) {
-			for(int j = 0; j < palabraSecreta.length(); j++) {
-				if(palabraSecreta.charAt(j) == c) {
+		boolean validador = false;	
+		for(int j = 0; j < PalabOculta.length(); j++) {
+				if(c == PalabOculta.charAt(j)) {
+					PalabraenAsterisco[j] = c;
+					contadorLetras--;
 					validador = true;
 				}
 			}
-			if (palabraSecreta.equals(PalabOculta)) {
-				System.out.println("GANASTE");
-			} else {
-				System.out.println("La palabra " + PalabOculta);
+			System.out.println(PalabraenAsterisco);
+			
+			if(contadorLetras == 0) {
+				if(turno ==0) {
+					System.out.print("El jugador ");
+				}else {
+					System.out.print("La maquina ");
+				}
+				System.out.println("Ha ganado");
 			}
-			}
+			
 			if(validador == false) {
 				System.out.println("La letra no se encuentra en ninguna posicion");
-				cantidadIntentos++;
-				System.out.println("Ya realizó " + cantidadIntentos + " intentos.");
+				cantidadIntentos[turno]++;
+				if(turno == 0) {
+					System.out.println("El jugador ya realizó " + cantidadIntentos[turno] + " intentos.");
+					
+				}else {
+					System.out.println("La maquina realizo " + cantidadIntentos[turno] + " intentos.");	
+				}
+				intentos(cantidadIntentos[turno]);
 			}
 	}	
 }
-
-
