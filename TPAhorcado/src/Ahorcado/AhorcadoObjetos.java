@@ -8,6 +8,7 @@ public class AhorcadoObjetos {
 	protected static String PalabOculta;
 	char[] PalabraenAsterisco;
 	int contadorLetras;
+	Scanner teclado= new Scanner(System.in);
 	
 	int getCantIntentos(int turno){
 		return cantidadIntentos[turno];
@@ -18,7 +19,6 @@ public class AhorcadoObjetos {
 	}
 	
 	public void PalabraOculta() {			
-		Scanner teclado= new Scanner(System.in);
 		String [] Palabra= {"telescopio","perro","escoba","caballo","carrusel","cataratas","avion","iguana"};
 		Random R= new Random();
 		int NumAleatorio= R.nextInt(Palabra.length);
@@ -93,13 +93,12 @@ public class AhorcadoObjetos {
 			System.out.println("La maquina eligio la letra "+ c);
 		}
 		System.out.println("Las letras utilizadas son " + letrasUtilizadas);
-		}
+	}
 
 	public void ingresarLetra(int turno) {
 		char letra;
 		if(turno == 0) {
 			System.out.println("Ingrese la letra: ");
-			Scanner teclado= new Scanner(System.in);
 			letra = teclado.next().toUpperCase().charAt(0);
 			repeticionLetras(letra, 0);
 		}else {
@@ -141,5 +140,7 @@ public class AhorcadoObjetos {
 				}
 				intentos(cantidadIntentos[turno]);
 			}
-	}	
+			teclado.close();
+	}
+	
 }
