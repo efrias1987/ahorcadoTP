@@ -10,10 +10,39 @@ public class AhorcadoObjetos {
 	int contadorLetras;
 	Scanner teclado= new Scanner(System.in);
 	
+	//inicia el programa
+	void inicio() {
+		//validador en true para poder verificar que por cada vuelta se verifique que la cantidad de intentos sea menor a 7
+		boolean validador = true;
+		//bucle principal que realiza 7 veces un bucle interno para jugar contra la maquina
+		do {
+			//bucle interno que permite dividir por turnos entre la maquina y la persona (turno 0 la persona, turno 1 la maquina)
+			for (int i = 0; i <2; i++) {
+				if(i == 0) {
+					if (getCantIntentos(i) < 7 && validador == true) {
+						System.out.println("Es el turno del jugador");
+						ingresarLetra(i);
+					}
+				}else if (i == 1 && validador == true && getContadorLetras() > 0 ){
+					if(getCantIntentos(i) < 7) {
+						System.out.println("Es el turno de la maquina");
+						ingresarLetra(i);	
+					}
+				}
+				if(getCantIntentos(i) > 6 || getContadorLetras() == 0) {
+					validador = false;
+				}
+			}
+		}while(validador && getContadorLetras() != 0);
+
+	}
+	
+	//retorna la cantidad de intentos que va 	
 	int getCantIntentos(int turno){
 		return cantidadIntentos[turno];
 	}
 	
+	//retorna el contador de las letras que utilizamos como validador de que la palabra ha sido encontrada
 	int getContadorLetras() {
 		return contadorLetras;
 	}
@@ -36,50 +65,44 @@ public class AhorcadoObjetos {
 	}
 	
 	public void intentos(int intentos) {
-		switch (intentos) {
+		for (int i = 0; i < intentos; i++ ) {
+			switch (i) {
+				case 0:
+					if (intentos==7) {
+						System.out.println("  -");	
+					}else {
+						System.out.println("  O");
+					}
+					break;
 				case 1:
-					System.out.println("O");
+					System.out.print(" /");
 					break;
 				case 2:
-					System.out.println(" O ");
-					System.out.println(" | ");
+					System.out.print("|");
 					break;
 				case 3:
-					System.out.println(" O ");
-					System.out.println("/| ");
+					System.out.println("\\ ");
 					break;
 				case 4:
-					System.out.println("  O  ");
-					System.out.println(" /|\\ ");
+					System.out.print(" / ");
 					break;
 				case 5:
-					System.out.println("  O ");
-					System.out.println(" /|\\ ");
-					System.out.println(" / ");
+					System.out.println("\\");
 					break;
 				case 6:
-					System.out.println("  O ");
-					System.out.println(" /|\\ ");
-					System.out.println(" / \\ ");
-					break;
-				case 7:
-					System.out.println("  - ");
-					System.out.println(" /|\\ ");
-					System.out.println(" / \\ ");
 					System.out.println("Perdió");
 					break;
+			}
 		}
 	}
 
 	public void repeticionLetras(char c, int turno){
 		boolean validador = false;
-		
 		for (int i = 0; i < letrasUtilizadas.length(); i++) {
 			if (c == letrasUtilizadas.charAt(i)) {
 				validador = true;
 			}
 		}
-		
 		if (validador) {
 			if (turno == 0) {
 				System.out.println("La letra ya existe, vuelva a intentarlo");
@@ -89,7 +112,8 @@ public class AhorcadoObjetos {
 			letrasUtilizadas = c + letrasUtilizadas;
 			resultado(c, turno);
 		}
-		if(turno == 1) {
+		System.out.println();
+		if(turno == 1 && !validador) {
 			System.out.println("La maquina eligio la letra "+ c);
 		}
 		System.out.println("Las letras utilizadas son " + letrasUtilizadas);
@@ -118,29 +142,27 @@ public class AhorcadoObjetos {
 					validador = true;
 				}
 			}
-			System.out.println(PalabraenAsterisco);
-			
-			if(contadorLetras == 0) {
-				if(turno ==0) {
-					System.out.print("El jugador ");
-				}else {
-					System.out.print("La maquina ");
-				}
-				System.out.println("Ha ganado");
+		System.out.println(PalabraenAsterisco);
+
+		if(contadorLetras == 0) {
+			if(turno ==0) {
+				System.out.print("El jugador ");
+			}else {
+				System.out.print("La maquina ");
 			}
-			
-			if(validador == false) {
-				System.out.println("La letra no se encuentra en ninguna posicion");
-				cantidadIntentos[turno]++;
-				if(turno == 0) {
-					System.out.println("El jugador ya realizó " + cantidadIntentos[turno] + " intentos.");
-					
-				}else {
-					System.out.println("La maquina realizo " + cantidadIntentos[turno] + " intentos.");	
-				}
-				intentos(cantidadIntentos[turno]);
+			System.out.println("Ha ganado");
+		}
+		if(validador == false) {
+			System.out.println("La letra no se encuentra en ninguna posicion");
+			cantidadIntentos[turno]++;
+			if(turno == 0) {
+				System.out.println();
+				System.out.println("El jugador ya realizó " + cantidadIntentos[turno] + " intentos.");	
+			}else {
+				System.out.println();
+				System.out.println("La maquina realizo " + cantidadIntentos[turno] + " intentos.");	
 			}
-			teclado.close();
+		intentos(cantidadIntentos[turno]);
+		}
 	}
-	
 }
